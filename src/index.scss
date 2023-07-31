@@ -5,7 +5,7 @@
     @import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap");
     body {
         font-family: "DM Sans", sans-serif;
-        @apply bg-slate-900 px-5;
+        @apply bg-slate-900;
     }
 }
 @layer components {

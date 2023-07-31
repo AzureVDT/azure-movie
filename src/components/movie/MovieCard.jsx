@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 const MovieCard = ({ item }) => {
+    const navigate = useNavigate();
     return (
         <div className="movie-card flex flex-col rounded-lg p-3 bg-slate-800 text-white h-full select-none">
             <img
@@ -31,7 +33,10 @@ const MovieCard = ({ item }) => {
                         </span>
                     </div>
                 </div>
-                <button className="py-3 px-6 rounded-lg capitalize bg-primary w-full mt-auto">
+                <button
+                    className="py-3 px-6 rounded-lg capitalize bg-primary w-full mt-auto"
+                    onClick={() => navigate(`/movie/${item.id}`)}
+                >
                     Watch Now
                 </button>
             </div>

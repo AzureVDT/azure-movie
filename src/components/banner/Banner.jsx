@@ -2,15 +2,15 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import useSWR from "swr";
 import { fetcher } from "../../config";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 const Banner = () => {
     const { data } = useSWR(
         `https://api.themoviedb.org/3/movie/upcoming?api_key=5a52ec1ab8c4c3c715520bb8a641c137`,
         fetcher
     );
     const movies = data?.results || [];
-    console.log("Banner ~ movies:", movies);
     return (
-        <section className="banner h-[500px] rounded-lg bg-white page-container mb-20 overflow-hidden">
+        <section className="banner h-[500px] rounded-lg page-container mb-20 overflow-hidden">
             <Swiper grabCursor={true} slidesPerView={"auto"}>
                 {movies.length > 0 &&
                     movies.map((item) => (
@@ -24,11 +24,12 @@ const Banner = () => {
 };
 
 const BannerItem = ({ item }) => {
+    const navigate = useNavigate();
     return (
         <div className="w-full h-full relative">
             <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
             <img
-                src={`https://image.tmdb.org/t/p/original/${item.poster_path}`}
+                src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
                 alt=""
                 className="w-full h-full object-cover rounded-lg"
             />
@@ -47,7 +48,10 @@ const BannerItem = ({ item }) => {
                         Drama
                     </span>
                 </div>
-                <button className="py-3 px-6 rounded-lg bg-primary text-white font-medium">
+                <button
+                    className="py-3 px-6 rounded-lg bg-primary text-white font-medium"
+                    onClick={() => navigate(`/movie/${item.id}`)}
+                >
                     Watch Now
                 </button>
             </div>
