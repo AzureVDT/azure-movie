@@ -4,32 +4,41 @@ import "swiper/scss";
 import Main from "./components/layout/Main";
 import HomePage from "./page/HomePage";
 import Banner from "./components/banner/Banner";
+import MovieExplorePage from "./page/MovieExplorePage";
+// import MovieDetailsPage from "./page/MovieDetailsPage";
+import { MovieProvider } from "./contexts/movie-context";
+// import MovieSearchPage from "./page/MovieSearchPage";
 import MoviePage from "./page/MoviePage";
-import MovieDetailsPage from "./page/MovieDetailsPage";
 const App = () => {
     return (
         <>
-            <Routes>
-                <Route element={<Main></Main>}>
-                    <Route
-                        path="/"
-                        element={
-                            <>
-                                <Banner></Banner>
-                                <HomePage></HomePage>
-                            </>
-                        }
-                    ></Route>
-                    <Route
-                        path="/movies"
-                        element={<MoviePage></MoviePage>}
-                    ></Route>
-                    <Route
-                        path="/movie/:movieId"
-                        element={<MovieDetailsPage></MovieDetailsPage>}
-                    ></Route>
-                </Route>
-            </Routes>
+            <MovieProvider>
+                <Routes>
+                    <Route element={<Main></Main>}>
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <Banner></Banner>
+                                    <HomePage></HomePage>
+                                </>
+                            }
+                        ></Route>
+                        <Route
+                            path="/movies"
+                            element={<MovieExplorePage></MovieExplorePage>}
+                        ></Route>
+                        {/* <Route
+                            path="/movie/:movieId"
+                            element={<MovieDetailsPage></MovieDetailsPage>}
+                        ></Route> */}
+                        <Route
+                            path="/movie/:slug"
+                            element={<MoviePage></MoviePage>}
+                        ></Route>
+                    </Route>
+                </Routes>
+            </MovieProvider>
         </>
     );
 };

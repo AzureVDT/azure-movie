@@ -5,9 +5,10 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "../components/movie/MovieCard";
 // import PropTypes from "prop-types";
 const MovieDetailsPage = () => {
-    const { movieId } = useParams();
+    const { slug } = useParams();
+    console.log("MovieDetailsPage ~ slug:", slug);
     const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`,
+        `https://api.themoviedb.org/3/movie/${slug}?api_key=${apiKey}`,
         fetcher
     );
     if (!data) return null;
@@ -36,7 +37,7 @@ const MovieDetailsPage = () => {
                     <div>{new Date(release_date).getFullYear()}</div>
                     <h3 className="text-4xl font-extrabold mb-5">{title}</h3>
                     <div className="flex items-center gap-x-3">
-                        {genres.length > 0 &&
+                        {genres?.length > 0 &&
                             genres.map((item) => (
                                 <div
                                     key={item.id}
@@ -76,7 +77,7 @@ const MovieDetailsPage = () => {
                 <div className="w-full h-[500px] max-w-[400px] ml-[200px] -translate-y-3/4">
                     <img
                         src={`https://image.tmdb.org/t/p/original/${poster_path}`}
-                        alt=""
+                        alt={title}
                         className="w-full h-full object-cover rounded-xl"
                     />
                 </div>
@@ -91,9 +92,9 @@ const MovieDetailsPage = () => {
 };
 
 function MovieCredits() {
-    const { movieId } = useParams();
+    const { slug } = useParams();
     const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`,
+        `https://api.themoviedb.org/3/movie/${slug}/credits?api_key=${apiKey}`,
         fetcher
     );
     if (!data) return null;
@@ -107,7 +108,7 @@ function MovieCredits() {
                     <div key={item.id} className="cast-item">
                         <img
                             src={`https://image.tmdb.org/t/p/original/${item.profile_path}`}
-                            alt=""
+                            alt={item.name}
                             className="w-full h-[350px] object-cover rounded-lg mb-3"
                         />
                         <h3 className="text-xl">{item.name}</h3>
@@ -119,9 +120,9 @@ function MovieCredits() {
 }
 
 function MovieVideos() {
-    const { movieId } = useParams();
+    const { slug } = useParams();
     const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`,
+        `https://api.themoviedb.org/3/movie/${slug}/videos?api_key=${apiKey}`,
         fetcher
     );
     if (!data) return null;
@@ -153,9 +154,9 @@ function MovieVideos() {
 }
 
 function MovieSimilar() {
-    const { movieId } = useParams();
+    const { slug } = useParams();
     const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`,
+        `https://api.themoviedb.org/3/movie/${slug}/similar?api_key=${apiKey}`,
         fetcher
     );
     if (!data) return null;
