@@ -10,7 +10,7 @@ const MovieCard = ({ item }) => {
                 className="w-full h-[250px] object-cover rounded-lg mb-5"
             />
             <div className="flex flex-col flex-1">
-                <h3 className="text-white text-xl font-bold mb-3">
+                <h3 className="text-white text-xl font-bold mb-3 min-h-[56px]">
                     {item.original_title}
                 </h3>
                 <div className="flex items-center justify-between text-sm opacity-50 mb-10">
