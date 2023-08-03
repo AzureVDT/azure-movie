@@ -1,6 +1,6 @@
 import React from "react";
 import useDebounce from "../hooks/useDebounce";
-import { apiKey } from "../config";
+import { tmdbAPI } from "../config";
 
 const MovieContext = React.createContext();
 
@@ -9,7 +9,7 @@ export function MovieProvider(props) {
     const filterDebounce = useDebounce(filter, 500);
     const [nextPage, setNextPage] = React.useState(1);
     const [url, setUrl] = React.useState(
-        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&page=${nextPage}`
+        tmdbAPI.getMovieList("upcoming", nextPage)
     );
     const value = {
         filter,

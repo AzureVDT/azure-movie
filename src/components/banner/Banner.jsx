@@ -1,30 +1,73 @@
 import { SwiperSlide, Swiper } from "swiper/react";
 import useSWR from "swr";
-import { fetcher } from "../../config";
+import { fetcher, handleFallbackComponent, tmdbAPI } from "../../config";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-const Banner = () => {
-    const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/upcoming?api_key=5a52ec1ab8c4c3c715520bb8a641c137`,
-        fetcher
-    );
-    const movies = data?.results || [];
-    return (
-        <section className="banner h-[500px] rounded-lg page-container mb-20 overflow-hidden">
-            <Swiper grabCursor={true} slidesPerView={"auto"}>
-                {movies.length > 0 &&
-                    movies.map((item) => (
-                        <SwiperSlide key={item.id}>
-                            <BannerItem item={item}></BannerItem>
-                        </SwiperSlide>
-                    ))}
-            </Swiper>
-        </section>
-    );
-};
+import Button from "../button/Button";
+import { useGenres } from "../../hooks/useGenres";
+import { withErrorBoundary } from "react-error-boundary";
+import LoadingSkeleton from "../loading/LoadingSkeleton";
+const Banner = withErrorBoundary(
+    () => {
+        const { data, error } = useSWR(
+            tmdbAPI.getMovieList("upcoming"),
+            fetcher
+        );
+        const movies = data?.results || [];
+        const isLoading = !data && !error;
+        return (
+            <section className="banner h-[500px] rounded-lg page-container mb-20 overflow-hidden">
+                {isLoading ? (
+                    <>
+                        <Swiper grabCursor={true} slidesPerView={"auto"}>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <BannerSkeleton></BannerSkeleton>
+                            </SwiperSlide>
+                        </Swiper>
+                    </>
+                ) : (
+                    <Swiper grabCursor={true} slidesPerView={"auto"}>
+                        {movies.length > 0 &&
+                            movies.map((item) => (
+                                <SwiperSlide key={item.id}>
+                                    <BannerItem item={item}></BannerItem>
+                                </SwiperSlide>
+                            ))}
+                    </Swiper>
+                )}
+            </section>
+        );
+    },
+    {
+        FallbackComponent: handleFallbackComponent,
+    }
+);
 
 const BannerItem = ({ item }) => {
+    const { genre_ids } = item;
     const navigate = useNavigate();
+    const genres = useGenres();
     return (
         <div className="w-full h-full relative">
             <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
@@ -38,22 +81,46 @@ const BannerItem = ({ item }) => {
                     {item.original_title}
                 </h2>
                 <div className="flex items-center gap-x-3 mb-8">
-                    <span className="border border-white rounded-lg px-4 py-2">
-                        Action
-                    </span>
-                    <span className="border border-white rounded-lg px-4 py-2">
-                        Adventure
-                    </span>
-                    <span className="border border-white rounded-lg px-4 py-2">
-                        Drama
-                    </span>
+                    {genres?.length > 0 &&
+                        genres.map((genre) => {
+                            if (genre_ids.includes(genre.id)) {
+                                return (
+                                    <div
+                                        key={genre.id}
+                                        className="border border-primary text-primary rounded-lg px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
+                                    >
+                                        {genre.name}
+                                    </div>
+                                );
+                            } else return null;
+                        })}
                 </div>
-                <button
-                    className="py-3 px-6 rounded-lg bg-primary text-white font-medium"
+                <Button
+                    className="py-3 px-6 rounded-lg"
                     onClick={() => navigate(`/movie/${item.id}`)}
                 >
                     Watch Now
-                </button>
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+const BannerSkeleton = () => {
+    return (
+        <div className="w-full h-full relative">
+            <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
+            <LoadingSkeleton className="w-full h-full rounded-lg"></LoadingSkeleton>
+            <div className="absolute left-5 bottom-5 w-full text-white">
+                <h2 className="font-bold text-3xl mb-5">
+                    <LoadingSkeleton className="w-[300px] h-[40px]"></LoadingSkeleton>
+                </h2>
+                <div className="flex items-center gap-x-3 mb-8">
+                    <LoadingSkeleton className="w-[108px] h-[42px] rounded-lg"></LoadingSkeleton>
+                    <LoadingSkeleton className="w-[108px] h-[42px] rounded-lg"></LoadingSkeleton>
+                    <LoadingSkeleton className="w-[108px] h-[42px] rounded-lg"></LoadingSkeleton>
+                </div>
+                <LoadingSkeleton className="w-[130px] h-[48px] rounded-lg"></LoadingSkeleton>
             </div>
         </div>
     );

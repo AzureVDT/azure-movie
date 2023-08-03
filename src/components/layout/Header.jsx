@@ -1,7 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useMovie } from "../../contexts/movie-context";
+import MovieGenres from "../movie/MovieGenres";
+import Button from "../button/Button";
 
-// https://api.themoviedb.org/3/search/movie
 const Header = () => {
     const { setFilter, filterDebounce } = useMovie();
     const navigate = useNavigate();
@@ -18,14 +19,14 @@ const Header = () => {
                         Home
                     </NavLink>
                     <NavLink
-                        to={"/movies"}
+                        to={"/explore"}
                         className={({ isActive }) =>
                             isActive ? "text-primary" : ""
                         }
                     >
                         Explore
                     </NavLink>
-                    <div className="cursor-pointer">Genres</div>
+                    <MovieGenres type="genre"></MovieGenres>
                 </div>
                 <div className="flex items-center justify-center gap-x-3">
                     <div className="flex-1 w-full max-w-[500px]">
@@ -58,12 +59,7 @@ const Header = () => {
                             />
                         </svg>
                     </button>
-                    <button
-                        type="submit"
-                        className="bg-primary text-white px-4 py-2 rounded-lg text-base font-semibold hover:bg-secondary"
-                    >
-                        Sign In
-                    </button>
+                    <Button className="px-4 py-2">Sign In</Button>
                 </div>
             </header>
         </>

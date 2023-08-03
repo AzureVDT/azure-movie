@@ -1,16 +1,12 @@
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { apiKey, fetcher } from "../config";
+import { fetcher, tmdbAPI } from "../config";
 import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "../components/movie/MovieCard";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 const MovieDetailsPage = () => {
     const { slug } = useParams();
-    console.log("MovieDetailsPage ~ slug:", slug);
-    const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${slug}?api_key=${apiKey}`,
-        fetcher
-    );
+    const { data } = useSWR(tmdbAPI.getMovieDetails(slug), fetcher);
     if (!data) return null;
     const {
         backdrop_path,
@@ -30,7 +26,9 @@ const MovieDetailsPage = () => {
                 <div
                     className="w-full h-full bg-cover bg-no-repeat"
                     style={{
-                        backgroundImage: `url(https://image.tmdb.org/t/p/original/${backdrop_path})`,
+                        backgroundImage: `url(${tmdbAPI.imageOriginal(
+                            backdrop_path
+                        )})`,
                     }}
                 ></div>
                 <div className="w-full max-w-[800px] absolute top-[36%] right-16 text-white">
@@ -76,111 +74,102 @@ const MovieDetailsPage = () => {
                 </div>
                 <div className="w-full h-[500px] max-w-[400px] ml-[200px] -translate-y-3/4">
                     <img
-                        src={`https://image.tmdb.org/t/p/original/${poster_path}`}
+                        src={tmdbAPI.imageOriginal(poster_path)}
                         alt={title}
                         className="w-full h-full object-cover rounded-xl"
                     />
                 </div>
             </div>
             <div className="page-container text-white">
-                <MovieCredits></MovieCredits>
-                <MovieVideos></MovieVideos>
-                <MovieSimilar></MovieSimilar>
+                <MovieMeta type="credits"></MovieMeta>
+                <MovieMeta type="videos"></MovieMeta>
+                <MovieMeta type="similar"></MovieMeta>
             </div>
         </>
     );
 };
 
-function MovieCredits() {
+function MovieMeta({ type }) {
     const { slug } = useParams();
-    const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${slug}/credits?api_key=${apiKey}`,
-        fetcher
-    );
+    const { data } = useSWR(tmdbAPI.getMovieMeta(slug, type), fetcher);
     if (!data) return null;
-    const { cast } = data;
-    if (!cast || cast.length <= 0) return null;
-    return (
-        <div className="py-16">
-            <h2 className="text-center text-3xl mt-[150px] mb-10">Casts</h2>
-            <div className="grid grid-cols-4 gap-5">
-                {cast.slice(0, 4).map((item) => (
-                    <div key={item.id} className="cast-item">
-                        <img
-                            src={`https://image.tmdb.org/t/p/original/${item.profile_path}`}
-                            alt={item.name}
-                            className="w-full h-[350px] object-cover rounded-lg mb-3"
-                        />
-                        <h3 className="text-xl">{item.name}</h3>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-}
-
-function MovieVideos() {
-    const { slug } = useParams();
-    const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${slug}/videos?api_key=${apiKey}`,
-        fetcher
-    );
-    if (!data) return null;
-    const { results } = data;
-    if (!results || results.length <= 0) return null;
-    return (
-        <div className="py-10">
-            <h2 className="text-center text-3xl mb-10">Trailer</h2>
-            <div className="flex flex-col gap-10">
-                {results.slice(0, 2).map((item) => (
-                    <div key={item.id}>
-                        <h3 className="mb-5 text-xl font-medium p-3 bg-secondary inline-block rounded-lg">
-                            {item.name}
-                        </h3>
-                        <div className="aspect-video">
-                            <iframe
-                                width="930"
-                                height="523"
-                                src={`https://www.youtube.com/embed/${item.key}`}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                            ></iframe>
+    if (type === "credits") {
+        const { cast } = data;
+        if (!cast || cast.length <= 0) return null;
+        return (
+            <div className="py-16">
+                <h2 className="text-center text-3xl mt-[150px] mb-10">Casts</h2>
+                <div className="grid grid-cols-4 gap-5">
+                    {cast.slice(0, 4).map((item) => (
+                        <div key={item.id} className="cast-item">
+                            <img
+                                src={tmdbAPI.imageOriginal(item.profile_path)}
+                                alt={item.name}
+                                className="w-full h-[350px] object-cover rounded-lg mb-3"
+                            />
+                            <h3 className="text-xl">{item.name}</h3>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
-        </div>
-    );
+        );
+    } else {
+        const { results } = data;
+        if (!results || results.length <= 0) return null;
+        if (type === "videos") {
+            return (
+                <div className="py-10">
+                    <h2 className="text-center text-3xl mb-10">Trailer</h2>
+                    <div className="flex flex-col gap-10">
+                        {results.slice(0, 2).map((item) => (
+                            <div key={item.id}>
+                                <h3 className="mb-5 text-xl font-medium p-3 bg-secondary inline-block rounded-lg">
+                                    {item.name}
+                                </h3>
+                                <div className="aspect-video">
+                                    <iframe
+                                        width="930"
+                                        height="523"
+                                        src={`https://www.youtube.com/embed/${item.key}`}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+        if (type === "similar") {
+            return (
+                <div className="py-10">
+                    <h2 className="text-3xl font-medium mb-10">
+                        Similar movies
+                    </h2>
+                    <div className="movie-list">
+                        <Swiper
+                            grabCursor={true}
+                            spaceBetween={40}
+                            slidesPerView={"auto"}
+                        >
+                            {results.length > 0 &&
+                                results.map((item) => (
+                                    <SwiperSlide key={item.id}>
+                                        <MovieCard item={item}></MovieCard>
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper>
+                    </div>
+                </div>
+            );
+        }
+    }
+    return null;
 }
 
-function MovieSimilar() {
-    const { slug } = useParams();
-    const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${slug}/similar?api_key=${apiKey}`,
-        fetcher
-    );
-    if (!data) return null;
-    const { results } = data;
-    if (!results || results.length <= 0) return null;
-    return (
-        <div className="py-10">
-            <h2 className="text-3xl font-medium mb-10">Similar movies</h2>
-            <div className="movie-list">
-                <Swiper
-                    grabCursor={true}
-                    spaceBetween={40}
-                    slidesPerView={"auto"}
-                >
-                    {results.length > 0 &&
-                        results.map((item) => (
-                            <SwiperSlide key={item.id}>
-                                <MovieCard item={item}></MovieCard>
-                            </SwiperSlide>
-                        ))}
-                </Swiper>
-            </div>
-        </div>
-    );
-}
+MovieMeta.propTypes = {
+    type: PropTypes.string.isRequired,
+};
 
 export default MovieDetailsPage;

@@ -1,28 +1,70 @@
 import { SwiperSlide, Swiper } from "swiper/react";
-import MovieCard from "./MovieCard";
-import { apiKey, fetcher } from "../../config";
+import MovieCard, { MovieCardSkeleton } from "./MovieCard";
+import { fetcher, handleFallbackComponent, tmdbAPI } from "../../config";
 import useSWR from "swr";
 import PropTypes from "prop-types";
-// https://api.themoviedb.org/3/movie/now_playing?api_key=5a52ec1ab8c4c3c715520bb8a641c137
-const MovieList = ({ type }) => {
-    const { data } = useSWR(
-        `https://api.themoviedb.org/3/movie/${type}?api_key=${apiKey}`,
-        fetcher
-    );
-    const movies = data?.results || [];
-    return (
-        <div className="movie-list">
-            <Swiper grabCursor={true} spaceBetween={40} slidesPerView={"auto"}>
-                {movies.length > 0 &&
-                    movies.map((item) => (
-                        <SwiperSlide key={item.id}>
-                            <MovieCard item={item}></MovieCard>
-                        </SwiperSlide>
-                    ))}
-            </Swiper>
-        </div>
-    );
-};
+import { withErrorBoundary } from "react-error-boundary";
+const MovieList = withErrorBoundary(
+    ({ type }) => {
+        const { data, error } = useSWR(tmdbAPI.getMovieList(type), fetcher);
+        const movies = data?.results || [];
+        const isLoading = !data && !error;
+        return (
+            <div className="movie-list">
+                {isLoading ? (
+                    <>
+                        <Swiper
+                            grabCursor={true}
+                            spaceBetween={40}
+                            slidesPerView={"auto"}
+                        >
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                        </Swiper>
+                    </>
+                ) : (
+                    <Swiper
+                        grabCursor={true}
+                        spaceBetween={40}
+                        slidesPerView={"auto"}
+                    >
+                        {movies.length > 0 &&
+                            movies.map((item) => (
+                                <SwiperSlide key={item.id}>
+                                    <MovieCard item={item}></MovieCard>
+                                </SwiperSlide>
+                            ))}
+                    </Swiper>
+                )}
+            </div>
+        );
+    },
+    {
+        FallbackComponent: handleFallbackComponent,
+    }
+);
 
 MovieList.propTypes = {
     type: PropTypes.string.isRequired,
