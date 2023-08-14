@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import { fetcher, tmdbAPI } from "../config";
 import { SwiperSlide, Swiper } from "swiper/react";
@@ -6,6 +6,7 @@ import MovieCard from "../components/movie/MovieCard";
 import PropTypes from "prop-types";
 const MovieDetailsPage = () => {
     const { slug } = useParams();
+    const navigate = useNavigate();
     const { data } = useSWR(tmdbAPI.getMovieDetails(slug), fetcher);
     if (!data) return null;
     const {
@@ -20,72 +21,88 @@ const MovieDetailsPage = () => {
         runtime,
     } = data;
     return (
-        <>
-            <div className="w-full h-[600px] relative">
-                <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-[rgba(0,0,0,0.7)]"></div>
-                <div
-                    className="w-full h-full bg-cover bg-no-repeat"
-                    style={{
-                        backgroundImage: `url(${tmdbAPI.imageOriginal(
-                            backdrop_path
-                        )})`,
-                    }}
-                ></div>
-                <div className="w-full max-w-[800px] absolute top-[36%] right-16 text-white">
-                    <div>{new Date(release_date).getFullYear()}</div>
-                    <h3 className="text-4xl font-extrabold mb-5">{title}</h3>
-                    <div className="flex items-center gap-x-3">
-                        {genres?.length > 0 &&
-                            genres.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="border border-primary text-primary rounded-lg px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
-                                >
-                                    {item.name}
-                                </div>
-                            ))}
-                    </div>
-                    <div className="flex items-center gap-x-[80px] mt-5">
-                        <div className="flex items-center gap-x-2">
-                            <span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    className="w-6 h-6"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                        clipRule="evenodd"
-                                        fill="#FEA31B"
-                                    />
-                                </svg>
-                            </span>
-                            <span>
-                                {vote_average} / 10 ({vote_count})
-                            </span>
+        <div
+            className="absolute top-0 w-full"
+            style={{
+                backgroundImage: `url("../src/assets/universe-2.jpg")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
+        >
+            <div className="relative mt-[140px]">
+                <div className="w-full h-[600px] relative">
+                    <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-[rgba(0,0,0,0.7)]"></div>
+                    <div
+                        className="w-full h-full bg-cover bg-no-repeat"
+                        style={{
+                            backgroundImage: `url(${tmdbAPI.imageOriginal(
+                                backdrop_path
+                            )})`,
+                        }}
+                    ></div>
+                    <div className="w-full max-w-[800px] absolute top-[36%] right-16 text-white">
+                        <div>{new Date(release_date).getFullYear()}</div>
+                        <h3 className="text-4xl font-extrabold mb-5">
+                            {title}
+                        </h3>
+                        <div className="flex items-center gap-x-3">
+                            {genres?.length > 0 &&
+                                genres.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="border border-primary text-primary rounded-lg px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
+                                        onClick={() =>
+                                            navigate(
+                                                `/discover/genreid=${item.id}&type=${item.name}`
+                                            )
+                                        }
+                                    >
+                                        {item.name}
+                                    </div>
+                                ))}
                         </div>
-                        <span>{runtime} mins</span>
+                        <div className="flex items-center gap-x-[80px] mt-5">
+                            <div className="flex items-center gap-x-2">
+                                <span>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        className="w-6 h-6"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                                            clipRule="evenodd"
+                                            fill="#FEA31B"
+                                        />
+                                    </svg>
+                                </span>
+                                <span>
+                                    {vote_average} / 10 ({vote_count})
+                                </span>
+                            </div>
+                            <span>{runtime} mins</span>
+                        </div>
+                        <div className="mt-5 text-xl font-medium leading-relaxed">
+                            <p>{overview}</p>
+                        </div>
                     </div>
-                    <div className="mt-5 text-xl font-medium leading-relaxed">
-                        <p>{overview}</p>
+                    <div className="w-full h-[500px] max-w-[400px] ml-[200px] -translate-y-3/4">
+                        <img
+                            src={tmdbAPI.imageOriginal(poster_path)}
+                            alt={title}
+                            className="w-full h-full object-cover rounded-xl"
+                        />
                     </div>
                 </div>
-                <div className="w-full h-[500px] max-w-[400px] ml-[200px] -translate-y-3/4">
-                    <img
-                        src={tmdbAPI.imageOriginal(poster_path)}
-                        alt={title}
-                        className="w-full h-full object-cover rounded-xl"
-                    />
+                <div className="page-container text-white">
+                    <MovieMeta type="credits"></MovieMeta>
+                    <MovieMeta type="videos"></MovieMeta>
+                    <MovieMeta type="similar"></MovieMeta>
                 </div>
             </div>
-            <div className="page-container text-white">
-                <MovieMeta type="credits"></MovieMeta>
-                <MovieMeta type="videos"></MovieMeta>
-                <MovieMeta type="similar"></MovieMeta>
-            </div>
-        </>
+        </div>
     );
 };
 

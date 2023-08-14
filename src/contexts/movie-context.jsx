@@ -1,6 +1,7 @@
 import React from "react";
 import useDebounce from "../hooks/useDebounce";
 import { tmdbAPI } from "../config";
+import useClickOutSide from "../hooks/useClickOutSide";
 
 const MovieContext = React.createContext();
 
@@ -11,11 +12,19 @@ export function MovieProvider(props) {
     const [url, setUrl] = React.useState(
         tmdbAPI.getMovieList("upcoming", nextPage)
     );
+    const {
+        show: showLogin,
+        setShow: setShowLogin,
+        nodeRef: loginRef,
+    } = useClickOutSide();
     const value = {
+        loginRef,
         filter,
         filterDebounce,
         url,
         nextPage,
+        showLogin,
+        setShowLogin,
         setFilter,
         setUrl,
         setNextPage,

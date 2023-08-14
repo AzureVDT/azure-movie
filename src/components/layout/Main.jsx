@@ -4,6 +4,7 @@ const Main = () => {
     return (
         <>
             <Header></Header>
+            <div className="w-full py-[80px]"></div>
             <Outlet></Outlet>
         </>
     );

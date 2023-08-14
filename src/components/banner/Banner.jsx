@@ -88,6 +88,11 @@ const BannerItem = ({ item }) => {
                                     <div
                                         key={genre.id}
                                         className="border border-primary text-primary rounded-lg px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
+                                        onClick={() =>
+                                            navigate(
+                                                `/discover/genreid=${genre.id}&type=${genre.name}`
+                                            )
+                                        }
                                     >
                                         {genre.name}
                                     </div>

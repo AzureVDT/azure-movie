@@ -6,6 +6,7 @@ const Button = ({
     type = "button",
     bgColor = "primary",
     defaultStyle = false,
+    disabled,
 }) => {
     let bgClassName = "bg-primary";
     switch (bgColor) {
@@ -25,6 +26,7 @@ const Button = ({
                 defaultStyle ? "py-3 px-6 w-full mt-auto" : ""
             } rounded-lg capitalize hover:bg-secondary ${bgClassName} ${className}`}
             onClick={onClick}
+            disabled={disabled}
         >
             {children}
         </button>
@@ -38,6 +40,7 @@ Button.propTypes = {
     children: PropTypes.node,
     bgColor: PropTypes.string,
     defaultStyle: PropTypes.bool,
+    disabled: PropTypes.bool,
 };
 
 export default Button;

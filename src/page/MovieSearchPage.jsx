@@ -17,28 +17,37 @@ const MovieSearchPage = () => {
     }, [filterDebounce, nextPage, setUrl]);
     const movies = data?.results || [];
     return (
-        <div className="py-10 page-container">
-            <div className="grid grid-cols-4 gap-10">
-                {loading &&
-                    new Array(20)
-                        .fill(0)
-                        .map((item, index) => (
-                            <MovieCardSkeleton
-                                key={`${item}${index}`}
-                            ></MovieCardSkeleton>
+        <div
+            className="absolute top-0 w-full"
+            style={{
+                backgroundImage: `url("../src/assets/universe-2.jpg")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
+        >
+            <div className="py-10 page-container mt-[120px] relative">
+                <div className="grid grid-cols-4 gap-10">
+                    {loading &&
+                        new Array(20)
+                            .fill(0)
+                            .map((item, index) => (
+                                <MovieCardSkeleton
+                                    key={`${item}${index}`}
+                                ></MovieCardSkeleton>
+                            ))}
+                    {!loading &&
+                        movies.length > 0 &&
+                        movies.map((item) => (
+                            <MovieCard key={item.id} item={item}></MovieCard>
                         ))}
-                {!loading &&
-                    movies.length > 0 &&
-                    movies.map((item) => (
-                        <MovieCard key={item.id} item={item}></MovieCard>
-                    ))}
-                {!loading && movies.length <= 0 && (
-                    <span className="text-3xl text-center text-primary font-extrabold">
-                        No result
-                    </span>
-                )}
+                    {!loading && movies.length <= 0 && (
+                        <span className="text-3xl text-center text-primary font-extrabold">
+                            No result
+                        </span>
+                    )}
+                </div>
+                <Pagination data={data}></Pagination>
             </div>
-            <Pagination data={data}></Pagination>
         </div>
     );
 };
