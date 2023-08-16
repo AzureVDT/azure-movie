@@ -12,7 +12,7 @@ const LoginPage = () => {
     };
     return ReactDOM.createPortal(
         <>
-            <div className="pt-[150px] rounded-lg w-full z-[10000] fixed top-0 h-screen">
+            <div className="pt-[150px] rounded-lg w-full z-[2000] fixed top-0 h-screen">
                 <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
                 <div
                     className="relative w-full max-w-[600px] mx-auto p-10 bg-slate-800 shadow-md rounded-lg"

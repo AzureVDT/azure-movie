@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useGenres } from "../../hooks/useGenres";
-import useHover from "../../hooks/useHover";
+import { useMovie } from "../../contexts/movie-context";
 const MovieGenres = () => {
     const navigate = useNavigate();
-    const { hovered, nodeRef } = useHover();
+    const { hovered, nodeRef } = useMovie();
     const genres = useGenres();
     return (
         <div className="relative z-[9999]" ref={nodeRef}>

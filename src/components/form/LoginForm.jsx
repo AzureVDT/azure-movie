@@ -9,8 +9,8 @@ import { useAuth } from "../../contexts/auth-context";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
-import IconEyeOpen from "../icon/IconEyeOpen";
-import IconEyeClose from "../icon/IconEyeClose";
+import LoadingSpinner from "../loading/LoadingSpinner";
+import { useMovie } from "../../contexts/movie-context";
 const schemaValidation = yup.object({
     email: yup
         .string()
@@ -30,7 +30,8 @@ const schemaValidation = yup.object({
 });
 const LoginForm = () => {
     const navigate = useNavigate();
-    const { userInfo, togglePassword, setTogglePassword } = useAuth();
+    const { userInfo } = useAuth();
+    const { setShowLogin } = useMovie();
     const {
         handleSubmit,
         formState: { errors, isSubmitting, isValid },
@@ -41,6 +42,7 @@ const LoginForm = () => {
     const onHandleSubmit = async (values) => {
         if (!isValid) return;
         await signInWithEmailAndPassword(auth, values.email, values.password);
+        setShowLogin(false);
         toast.success("Login successfully");
         navigate("/");
     };
@@ -69,33 +71,28 @@ const LoginForm = () => {
                 control={control}
             ></FormGroup>
             <FormGroup
-                type={togglePassword ? "text" : "password"}
+                type="password"
                 placeholder="Enter your password"
                 name="password"
                 id="password"
                 label="Password"
                 control={control}
-            >
-                {togglePassword ? (
-                    <IconEyeOpen
-                        className="input-icon"
-                        onClick={() => setTogglePassword(false)}
-                    ></IconEyeOpen>
-                ) : (
-                    <IconEyeClose
-                        className="input-icon"
-                        onClick={() => setTogglePassword(true)}
-                    ></IconEyeClose>
-                )}
-            </FormGroup>
+            ></FormGroup>
             <Button
                 type="submit"
-                className={`w-full p-3 font-medium text-white ${
-                    isSubmitting ? "opacity-20 invisible" : ""
+                className={`w-full h-[48px] mt-5 p-3 font-medium text-white flex items-center justify-center ${
+                    isSubmitting ? "opacity-20" : ""
                 }`}
                 disabled={isSubmitting}
             >
-                Login
+                {isSubmitting ? (
+                    <LoadingSpinner
+                        size="30px"
+                        borderSize="3px"
+                    ></LoadingSpinner>
+                ) : (
+                    <span>Login</span>
+                )}
             </Button>
         </form>
     );

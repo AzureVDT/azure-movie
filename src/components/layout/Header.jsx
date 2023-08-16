@@ -4,17 +4,14 @@ import MovieGenres from "../movie/MovieGenres";
 import Button from "../button/Button";
 import ReactDOM from "react-dom";
 import LoginPage from "../../page/LoginPage";
-
+import { useAuth } from "../../contexts/auth-context";
+import UserOption from "../user/UserOption";
+import useClickOutSide from "../../hooks/useClickOutSide";
 const Header = () => {
-    const {
-        filter,
-        setFilter,
-        filterDebounce,
-        setShowLogin,
-        showLogin,
-        isSuccess,
-        userInfo,
-    } = useMovie();
+    const { filter, setFilter, filterDebounce, setShowLogin, showLogin } =
+        useMovie();
+    const { userInfo } = useAuth();
+    const { show, setShow, nodeRef } = useClickOutSide();
     const navigate = useNavigate();
     if (typeof document === "undefined") return null;
     return ReactDOM.createPortal(
@@ -80,8 +77,19 @@ const Header = () => {
                                 />
                             </svg>
                         </button>
-                        {isSuccess ? (
-                            <div>{userInfo?.displayName}</div>
+                        {userInfo ? (
+                            <div
+                                className="relative cursor-pointer border border-secondary hover:bg-secondary rounded px-4 py-2"
+                                ref={nodeRef}
+                                onClick={() => setShow(true)}
+                            >
+                                {userInfo?.displayName}
+                                {show && (
+                                    <UserOption
+                                        className={`absolute top-[60px] left-0 z-[1000] w-[180px] -translate-x-4 bg-white text-primary text-base font-medium rounded`}
+                                    ></UserOption>
+                                )}
+                            </div>
                         ) : (
                             <Button
                                 className="px-4 py-2"

@@ -8,7 +8,9 @@ const FormGroup = ({ control, children, ...props }) => {
     });
     return (
         <div className="flex flex-col gap-y-2 mb-5 text-white">
-            <label htmlFor={props.name}>{props.label}</label>
+            <label htmlFor={props.name} className="cursor-pointer">
+                {props.label}
+            </label>
             <div className="relative">
                 <input
                     {...props}

@@ -2,6 +2,7 @@ import React from "react";
 import useDebounce from "../hooks/useDebounce";
 import { tmdbAPI } from "../config";
 import useClickOutSide from "../hooks/useClickOutSide";
+import useHover from "../hooks/useHover";
 
 const MovieContext = React.createContext();
 
@@ -12,6 +13,8 @@ export function MovieProvider(props) {
     const [url, setUrl] = React.useState(
         tmdbAPI.getMovieList("upcoming", nextPage)
     );
+
+    const { hovered, nodeRef } = useHover();
     const {
         show: showLogin,
         setShow: setShowLogin,
@@ -24,10 +27,12 @@ export function MovieProvider(props) {
         url,
         nextPage,
         showLogin,
+        hovered,
         setShowLogin,
         setFilter,
         setUrl,
         setNextPage,
+        nodeRef,
     };
     return (
         <MovieContext.Provider value={value} {...props}></MovieContext.Provider>

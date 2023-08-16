@@ -132,7 +132,7 @@ const RegisterForm = () => {
             <Button
                 type="submit"
                 className={`w-full h-[48px] mt-5 p-3 font-medium text-white flex items-center justify-center ${
-                    isSubmitting ? "opacity-20 invisible" : ""
+                    isSubmitting ? "opacity-20" : ""
                 }`}
                 disabled={isSubmitting}
             >

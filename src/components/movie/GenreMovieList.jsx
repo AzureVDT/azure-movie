@@ -7,7 +7,6 @@ import Pagination from "../layout/Pagination";
 const GenreMovieList = () => {
     const { nextPage } = useMovie();
     const { slug } = useParams();
-    console.log("GenreMovieList ~ genreId:", slug);
     const keyValuePairs = slug.split("&");
     let genreId, type;
     keyValuePairs.forEach((keyValuePair) => {
