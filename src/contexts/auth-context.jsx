@@ -1,5 +1,5 @@
 import React from "react";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 const AuthContext = React.createContext();
 
@@ -12,19 +12,12 @@ export function AuthProvider(props) {
     });
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [userInfo, setUserInfo] = React.useState("");
-    const handleSignOut = () => {
-        signOut(auth);
-    };
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        const cred = await signInWithEmailAndPassword(
-            auth,
-            values.email,
-            values.password
-        );
-        setUserInfo(cred);
-        console.log("Login successfully");
-    };
+    const [togglePassword, setTogglePassword] = React.useState();
+    React.useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            setUserInfo(user);
+        });
+    }, []);
     const contextValues = {
         isSuccess,
         values,
@@ -32,8 +25,8 @@ export function AuthProvider(props) {
         setIsSuccess,
         setValues,
         setUserInfo,
-        handleSignOut,
-        handleLogin,
+        togglePassword,
+        setTogglePassword,
     };
     return (
         <AuthContext.Provider

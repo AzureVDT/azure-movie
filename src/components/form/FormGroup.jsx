@@ -9,13 +9,15 @@ const FormGroup = ({ control, children, ...props }) => {
     return (
         <div className="flex flex-col gap-y-2 mb-5 text-white">
             <label htmlFor={props.name}>{props.label}</label>
-            <input
-                {...props}
-                {...field}
-                className="w-full border border-gray-200 p-3 rounded-lg focus:border-primary"
-                autoComplete="false"
-            />
-            {children}
+            <div className="relative">
+                <input
+                    {...props}
+                    {...field}
+                    className="w-full border border-gray-200 p-3 rounded-lg focus:border-primary"
+                    autoComplete="false"
+                />
+                {children}
+            </div>
         </div>
     );
 };

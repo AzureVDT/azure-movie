@@ -3,6 +3,14 @@ import Button from "../button/Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "react-toastify";
+import React from "react";
+import { useAuth } from "../../contexts/auth-context";
+import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config";
+import IconEyeOpen from "../icon/IconEyeOpen";
+import IconEyeClose from "../icon/IconEyeClose";
 const schemaValidation = yup.object({
     email: yup
         .string()
@@ -21,6 +29,8 @@ const schemaValidation = yup.object({
         .required("Please enter your password"),
 });
 const LoginForm = () => {
+    const navigate = useNavigate();
+    const { userInfo, togglePassword, setTogglePassword } = useAuth();
     const {
         handleSubmit,
         formState: { errors, isSubmitting, isValid },
@@ -28,11 +38,26 @@ const LoginForm = () => {
     } = useForm({
         resolver: yupResolver(schemaValidation),
     });
-    const onHandleSubmit = (values) => {
+    const onHandleSubmit = async (values) => {
         if (!isValid) return;
-        console.log(values);
-        return alert("Login successfully");
+        await signInWithEmailAndPassword(auth, values.email, values.password);
+        toast.success("Login successfully");
+        navigate("/");
     };
+    React.useEffect(() => {
+        document.title = "Login Page";
+        if (userInfo?.email) navigate("/");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    React.useEffect(() => {
+        const arrErrors = Object.values(errors);
+        if (arrErrors.length > 0)
+            toast.error(arrErrors[0]?.message, {
+                pauseOnHover: false,
+                delay: 0,
+                className: "",
+            });
+    }, [errors]);
     return (
         <form onSubmit={handleSubmit(onHandleSubmit)} className="mt-5 mb-5">
             <FormGroup
@@ -42,25 +67,25 @@ const LoginForm = () => {
                 id="email"
                 label="Email"
                 control={control}
-            >
-                {errors?.email && (
-                    <div className="text-sm text-primary">
-                        {errors.email.message}
-                    </div>
-                )}
-            </FormGroup>
+            ></FormGroup>
             <FormGroup
-                type="password"
+                type={togglePassword ? "text" : "password"}
                 placeholder="Enter your password"
                 name="password"
                 id="password"
                 label="Password"
                 control={control}
             >
-                {errors?.password && (
-                    <div className="text-sm text-primary">
-                        {errors.password.message}
-                    </div>
+                {togglePassword ? (
+                    <IconEyeOpen
+                        className="input-icon"
+                        onClick={() => setTogglePassword(false)}
+                    ></IconEyeOpen>
+                ) : (
+                    <IconEyeClose
+                        className="input-icon"
+                        onClick={() => setTogglePassword(true)}
+                    ></IconEyeClose>
                 )}
             </FormGroup>
             <Button

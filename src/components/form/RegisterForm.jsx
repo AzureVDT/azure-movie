@@ -3,7 +3,16 @@ import Button from "../button/Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../../firebase-config";
+import { addDoc, collection } from "firebase/firestore";
+import { toast } from "react-toastify";
+import React from "react";
+import LoadingSpinner from "../loading/LoadingSpinner";
+import { useNavigate } from "react-router-dom";
+import IconEyeOpen from "../icon/IconEyeOpen";
+import { useAuth } from "../../contexts/auth-context";
+import IconEyeClose from "../icon/IconEyeClose";
 const schemaValidation = yup.object({
     firstName: yup.string().required("Please enter your first name"),
     lastName: yup.string().required("Please enter your last name"),
@@ -24,6 +33,8 @@ const schemaValidation = yup.object({
         .required("Please enter your password"),
 });
 const RegisterForm = () => {
+    const { togglePassword, setTogglePassword } = useAuth();
+    const navigate = useNavigate();
     const {
         handleSubmit,
         formState: { errors, isSubmitting, isValid },
@@ -34,14 +45,42 @@ const RegisterForm = () => {
     });
     const onHandleSubmit = async (values) => {
         if (!isValid) return;
-        console.log("onHandleSubmit ~ values:", values);
+        await createUserWithEmailAndPassword(
+            auth,
+            values.email,
+            values.password
+        );
+        const colRef = collection(db, "users");
+        await addDoc(colRef, {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            password: values.password,
+        });
+        await updateProfile(auth.currentUser, {
+            displayName: `${values.firstName} ${values.lastName}`,
+        });
+        toast.success("Register successfully");
         reset({
             firstName: "",
             lastName: "",
             email: "",
             password: "",
         });
+        navigate("/");
     };
+    React.useEffect(() => {
+        const arrErrors = Object.values(errors);
+        if (arrErrors.length > 0)
+            toast.error(arrErrors[0]?.message, {
+                pauseOnHover: false,
+                delay: 0,
+                className: "",
+            });
+    }, [errors]);
+    React.useEffect(() => {
+        document.title = "Register Page";
+    }, []);
     return (
         <form onSubmit={handleSubmit(onHandleSubmit)}>
             <div className="flex items-center justify-between">
@@ -52,13 +91,7 @@ const RegisterForm = () => {
                     id="firstName"
                     label="First name"
                     control={control}
-                >
-                    {errors?.firstName && (
-                        <div className="text-sm text-primary">
-                            {errors.firstName.message}
-                        </div>
-                    )}
-                </FormGroup>
+                ></FormGroup>
                 <FormGroup
                     type="text"
                     placeholder="Enter your last name"
@@ -66,13 +99,7 @@ const RegisterForm = () => {
                     id="lastName"
                     label="Last name"
                     control={control}
-                >
-                    {errors?.lastName && (
-                        <div className="text-sm text-primary">
-                            {errors.lastName.message}
-                        </div>
-                    )}
-                </FormGroup>
+                ></FormGroup>
             </div>
             <FormGroup
                 type="email"
@@ -81,35 +108,42 @@ const RegisterForm = () => {
                 id="email"
                 label="Email"
                 control={control}
-            >
-                {errors?.email && (
-                    <div className="text-sm text-primary">
-                        {errors.email.message}
-                    </div>
-                )}
-            </FormGroup>
+            ></FormGroup>
             <FormGroup
-                type="password"
+                type={togglePassword ? "text" : "password"}
                 placeholder="Enter your password"
                 name="password"
                 id="password"
                 label="Password"
                 control={control}
             >
-                {errors?.password && (
-                    <div className="text-sm text-primary">
-                        {errors.password.message}
-                    </div>
+                {togglePassword ? (
+                    <IconEyeOpen
+                        className="input-icon"
+                        onClick={() => setTogglePassword(false)}
+                    ></IconEyeOpen>
+                ) : (
+                    <IconEyeClose
+                        className="input-icon"
+                        onClick={() => setTogglePassword(true)}
+                    ></IconEyeClose>
                 )}
             </FormGroup>
             <Button
                 type="submit"
-                className={`w-full mt-5 p-3 font-medium text-white ${
+                className={`w-full h-[48px] mt-5 p-3 font-medium text-white flex items-center justify-center ${
                     isSubmitting ? "opacity-20 invisible" : ""
                 }`}
                 disabled={isSubmitting}
             >
-                Register
+                {isSubmitting ? (
+                    <LoadingSpinner
+                        size="30px"
+                        borderSize="3px"
+                    ></LoadingSpinner>
+                ) : (
+                    <span>Register</span>
+                )}
             </Button>
         </form>
     );

@@ -25,7 +25,7 @@ const Header = () => {
                 backgroundPosition: "center",
             }}
         >
-            <header className="header w-full fixed top-0 z-[9999] py-10">
+            <header className="header w-full fixed top-0 z-[1000] py-10">
                 <div className="flex page-container items-center justify-between text-white p-3 bg-slate-700 bg-opacity-50 rounded-lg">
                     <div className="flex items-center justify-center gap-x-5">
                         <NavLink
