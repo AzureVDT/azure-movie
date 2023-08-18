@@ -36,7 +36,7 @@ The Movies App is a platform that allows users to explore a vast collection of m
 
 4. **Login page:** On this page, registered users can log in to access app features.
 
-    ![](./src/assets/ReadmeImage/login-page.png)
+    ![](./src/assets/ReadmeImage/login-form.png)
 
 5. **Register page:** On this page, new users can create an account.
 
@@ -46,7 +46,7 @@ The Movies App is a platform that allows users to explore a vast collection of m
 
     - **Change display name:** Click the edit icon and enter a new display name, then click Finish to save changes.
 
-        ![](./src/assets/ReadmeImage/change-display-name.png)
+        ![](./src/assets/ReadmeImage/general.png)
 
     - **Change password:** Click the edit icon and enter current and new password, then click Finish to save changes.
 
