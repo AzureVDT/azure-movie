@@ -51,12 +51,13 @@ const RegisterForm = () => {
             values.password
         );
         const colRef = collection(db, "users");
-        await addDoc(colRef, {
+        const docRef = await addDoc(colRef, {
             firstName: values.firstName,
             lastName: values.lastName,
             email: values.email,
             password: values.password,
         });
+        localStorage.setItem("userId", docRef.id);
         await updateProfile(auth.currentUser, {
             displayName: `${values.firstName} ${values.lastName}`,
         });
