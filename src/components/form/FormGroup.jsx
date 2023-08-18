@@ -16,7 +16,7 @@ const FormGroup = ({ control, children, ...props }) => {
                     {...props}
                     {...field}
                     className="w-full border border-gray-200 p-3 rounded-lg focus:border-primary"
-                    autoComplete="false"
+                    autoComplete="off"
                 />
                 {children}
             </div>

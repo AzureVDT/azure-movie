@@ -83,7 +83,7 @@ const RegisterForm = () => {
         document.title = "Register Page";
     }, []);
     return (
-        <form onSubmit={handleSubmit(onHandleSubmit)}>
+        <form onSubmit={handleSubmit(onHandleSubmit)} autoComplete="off">
             <div className="flex items-center justify-between">
                 <FormGroup
                     type="text"

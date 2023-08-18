@@ -4,7 +4,8 @@ import MovieCard, { MovieCardSkeleton } from "../components/movie/MovieCard";
 import { useMovie } from "../contexts/movie-context";
 import React from "react";
 import Pagination from "../components/layout/Pagination";
-const MovieSearchPage = () => {
+import PropTypes from "prop-types";
+const MovieSearchPage = ({ searchTitle }) => {
     const { url, filterDebounce, setUrl, nextPage } = useMovie();
     const { data, error } = useSWR(url, fetcher);
     const loading = !data && !error;
@@ -15,6 +16,9 @@ const MovieSearchPage = () => {
             setUrl(tmdbAPI.getMovieList("upcoming", nextPage));
         }
     }, [filterDebounce, nextPage, setUrl]);
+    React.useEffect(() => {
+        document.title = `${searchTitle.split("=").pop()}`;
+    }, [searchTitle]);
     const movies = data?.results || [];
     return (
         <div
@@ -50,6 +54,9 @@ const MovieSearchPage = () => {
             </div>
         </div>
     );
+};
+MovieSearchPage.propTypes = {
+    searchTitle: PropTypes.string,
 };
 
 export default MovieSearchPage;

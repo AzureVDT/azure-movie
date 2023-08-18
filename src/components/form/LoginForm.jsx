@@ -47,7 +47,6 @@ const LoginForm = () => {
         navigate("/");
     };
     React.useEffect(() => {
-        document.title = "Login Page";
         if (userInfo?.email) navigate("/");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -61,7 +60,11 @@ const LoginForm = () => {
             });
     }, [errors]);
     return (
-        <form onSubmit={handleSubmit(onHandleSubmit)} className="mt-5 mb-5">
+        <form
+            onSubmit={handleSubmit(onHandleSubmit)}
+            className="mt-5 mb-5"
+            autoComplete="off"
+        >
             <FormGroup
                 type="email"
                 placeholder="Enter your email address"

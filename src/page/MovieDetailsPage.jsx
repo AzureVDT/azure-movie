@@ -4,10 +4,15 @@ import { fetcher, tmdbAPI } from "../config";
 import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "../components/movie/MovieCard";
 import PropTypes from "prop-types";
+import React from "react";
 const MovieDetailsPage = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
     const { data } = useSWR(tmdbAPI.getMovieDetails(slug), fetcher);
+
+    React.useEffect(() => {
+        document.title = `${data?.title}`;
+    }, [data?.title]);
     if (!data) return null;
     const {
         backdrop_path,

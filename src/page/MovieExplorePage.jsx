@@ -3,8 +3,12 @@ import { fetcher, tmdbAPI } from "../config";
 import MovieCard, { MovieCardSkeleton } from "../components/movie/MovieCard";
 import Pagination from "../components/layout/Pagination";
 import { useMovie } from "../contexts/movie-context";
+import React from "react";
 
 const MovieExplorePage = () => {
+    React.useEffect(() => {
+        document.title = "Explore";
+    }, []);
     const { nextPage } = useMovie();
     const { data, error } = useSWR(
         tmdbAPI.getMovieList("popular", nextPage),

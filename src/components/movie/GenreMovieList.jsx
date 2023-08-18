@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import MovieCard, { MovieCardSkeleton } from "./MovieCard";
 import { useMovie } from "../../contexts/movie-context";
 import Pagination from "../layout/Pagination";
+import React from "react";
 const GenreMovieList = () => {
     const { nextPage } = useMovie();
     const { slug } = useParams();
@@ -17,6 +18,10 @@ const GenreMovieList = () => {
             type = value;
         }
     });
+
+    React.useEffect(() => {
+        document.title = `${type} Genres`;
+    }, [type]);
     const { data, error } = useSWR(
         tmdbAPI.getGenreMovieList(genreId, nextPage),
         fetcher

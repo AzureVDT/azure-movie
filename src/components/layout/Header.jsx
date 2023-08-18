@@ -44,6 +44,7 @@ const Header = () => {
                     <div className="flex items-center justify-center gap-x-3">
                         <div className="flex-1 w-full max-w-[500px]">
                             <input
+                                autoComplete="off"
                                 type="text"
                                 name="search"
                                 placeholder="Enter movies..."

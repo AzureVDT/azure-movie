@@ -8,7 +8,7 @@ const MoviePage = () => {
     return (
         <>
             {isSlugString ? (
-                <MovieSearchPage></MovieSearchPage>
+                <MovieSearchPage searchTitle={slug}></MovieSearchPage>
             ) : (
                 <MovieDetailsPage></MovieDetailsPage>
             )}

@@ -24,6 +24,31 @@ const UserPasswordEdit = () => {
                 user?.email,
                 oldPassword
             );
+            if (!oldPassword) {
+                toast.error("Please enter your old password", {
+                    delay: 0,
+                    pauseOnHover: false,
+                });
+                return;
+            }
+            if (!newPassword) {
+                toast.error("Please enter your new password", {
+                    delay: 0,
+                    pauseOnHover: false,
+                });
+                return;
+            }
+            if (
+                !newPassword.match(
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+                )
+            ) {
+                toast.error(
+                    "Your new password must have at least with one lowercase, uppercase, digit and special character",
+                    { delay: 0, pauseOnHover: false }
+                );
+                return;
+            }
             await reauthenticateWithCredential(auth.currentUser, credential);
             await updatePassword(auth.currentUser, newPassword);
             const userRef = doc(db, "users", userId);

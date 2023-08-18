@@ -5,12 +5,16 @@ Welcome to Movie App! This is a web application built using React and powered by
 ## Table of Contents
 
 -   [Introduction](#introduction)
--   [Page](#page)
+-   [Pages](#pages)
 -   [Features](#features)
 -   [Getting Started](#getting-started)
 -   [Usage](#usage)
 -   [Search](#search)
 -   [Movie Details](#movie-details)
+-   [Login](#login)
+-   [Register](#register)
+-   [Change Password](#change-password)
+-   [Change Display Name](#change-display-name)
 -   [Contributing](#contributing)
 -   [License](#license)
 
@@ -18,7 +22,7 @@ Welcome to Movie App! This is a web application built using React and powered by
 
 The Movies App is a platform that allows users to explore a vast collection of movies. The application leverages the power of React to deliver a seamless and responsive user experience. By utilizing Vite, the development process is streamlined, enabling faster loading times and better performance.
 
-## Page
+## Pages
 
 1. **Home page:** On this page, You will see the banner of currently showing movies at the theater, and below it is a list of trending, top-rated, and popular movies.
    ![](./src/assets/ReadmeImage/home-page.png)
@@ -30,59 +34,96 @@ The Movies App is a platform that allows users to explore a vast collection of m
 
     ![](./src/assets/ReadmeImage/movie-details-page.png)
 
+4. **Login page:** On this page, registered users can log in to access app features.
+
+    ![](./src/assets/ReadmeImage/login-page.png)
+
+5. **Register page:** On this page, new users can create an account.
+
+    ![](./src/assets/ReadmeImage/register-page.png)
+
+6. **User profile page:** On this page, logged in users can change their display name, password, and access account settings.
+
+    - **Change display name:** Click the edit icon and enter a new display name, then click Finish to save changes.
+
+        ![](./src/assets/ReadmeImage/change-display-name.png)
+
+    - **Change password:** Click the edit icon and enter current and new password, then click Finish to save changes.
+
+        ![](./src/assets/ReadmeImage/change-password.png)
+
 ## Features
 
 The Movies App comes equipped with the following features:
 
-1. **Now Playing:** View a curated list of movies currently being screened in theaters.
+1. **Now Playing:** View movies currently screening in theaters.
 
-2. **Trending Movies:** Discover the latest trending movies that are gaining popularity.
+2. **Trending Movies:** Discover trending and popular movies.
 
-3. **Top Rated Movies:** Explore a selection of movies with the highest user ratings.
+3. **Top Rated Movies:** Highly rated movies by users.
 
-4. **Popular Movies:** Browse a collection of the most popular movies.
+4. **Movie Search:** Search movies by title.
 
-5. **Movie Search:** Easily find movies by searching for their titles.
+5. **Genre Search:** Find movies by genre.
 
-6. **Genre-based Search:** Filter movies based on specific genres.
+6. **Movie Details:** View synopsis, cast, release date etc.
 
-7. **Movie Details:** Access detailed information about each movie, including synopsis, cast, release date, and more.
+7. **User Login:** Registered users can log in.
+
+8. **User Registration:** New users can create an account.
+
+9. **Change Display Name:** Edit account display name.
+
+10. **Change Password:** Change account password.
+
+11. **Account Settings:** Manage user account.
 
 ## Installation
 
-To run Movie App on your local machine, follow these steps:
+Follow these steps to run the app locally:
 
-1. Ensure you have Node.js installed on your system.
-2. Clone this repository: `git clone https://github.com/your-username/movie-app.git`.
-3. Navigate to the project directory: `cd movie-app`.
-4. Install dependencies: `npm install` or `yarn install`.
-5. Start the development server: `npm run dev` or `yarn dev`.
-6. Open your browser and go to `http://localhost:5173` to access the Movie App.
+1. Clone the repo `git clone https://github.com/your-username/movie-app.git`
+2. Install dependencies with `npm install`
+3. Start development server with `npm run dev`
+4. Go to `http://localhost:5173` in your browser.
 
 ## Usage
 
-Upon accessing the Movies App, you will be presented with the home page, featuring various movie categories. Clicking on each category will lead you to a list of relevant movies. From there, you can click on any movie to view its detailed information.
+On the homepage, browse movie categories or use search to find movies. Click a movie to see details. Registered users can log in to access account features.
 
 ## Search
 
-The Movies App offers two methods for searching movies:
+-   **Search by title:** Use search bar to find movies by title.
 
-Search by Title: Use the search bar at the top of the page to find movies by their titles.
-![](./src/assets/ReadmeImage/search-by-title.png)
-Search by Genre: Use the genre filters to narrow down movies by specific categories.
-![](./src/assets/ReadmeImage/search-by-genres.png)
+-   **Search by genre:** Use genre filters to find movies.
 
 ## Movie Details
 
-When viewing a movie's details, you will find comprehensive information about the selected movie. This includes the movie's synopsis, cast, director, release date, genre, and user ratings.
+Movie details include synopsis, cast, director, release date, genre and ratings.
+
+## Login
+
+Registered users can log in with their credentials on the login page. This provides access to account features.
+
+## Register
+
+New users can create an account by providing details on the register page.
+
+## Change Password
+
+Logged in users can change their account password on the profile page.
+
+## Change Display Name
+
+Logged in users can edit their display name on the profile page.
 
 ## Contributing
 
-We welcome contributions from the community to enhance the Movies App further. If you find any issues or have ideas for improvements, feel free to open a GitHub issue or submit a pull request.
+Contributions are welcome! Please open issues or submit pull requests.
 
 ## License
 
-The Movies App is licensed under the MIT License. Feel free to use, modify, and distribute the code as per the terms of this license.
+This project is under the MIT License.
 
 ##
 

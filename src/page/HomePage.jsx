@@ -1,7 +1,11 @@
+import React from "react";
 import Banner from "../components/banner/Banner";
 import MovieList from "../components/movie/MovieList";
 
 const HomePage = () => {
+    React.useEffect(() => {
+        document.title = "Home";
+    }, []);
     return (
         <div
             className="absolute top-0 w-full"
