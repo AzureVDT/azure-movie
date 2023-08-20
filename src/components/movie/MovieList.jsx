@@ -4,6 +4,7 @@ import { fetcher, handleFallbackComponent, tmdbAPI } from "../../config";
 import useSWR from "swr";
 import PropTypes from "prop-types";
 import { withErrorBoundary } from "react-error-boundary";
+import IconSlider from "../icon/IconSlider";
 const MovieList = withErrorBoundary(
     ({ type }) => {
         const { data, error } = useSWR(tmdbAPI.getMovieList(type), fetcher);
@@ -15,8 +16,8 @@ const MovieList = withErrorBoundary(
                     <>
                         <Swiper
                             grabCursor={true}
-                            spaceBetween={40}
-                            slidesPerView={"auto"}
+                            spaceBetween={30}
+                            slidesPerView={4}
                         >
                             <SwiperSlide>
                                 <MovieCardSkeleton></MovieCardSkeleton>
@@ -47,8 +48,8 @@ const MovieList = withErrorBoundary(
                 ) : (
                     <Swiper
                         grabCursor={true}
-                        spaceBetween={40}
-                        slidesPerView={"auto"}
+                        spaceBetween={30}
+                        slidesPerView={4}
                     >
                         {movies.length > 0 &&
                             movies.map((item) => (
@@ -56,6 +57,7 @@ const MovieList = withErrorBoundary(
                                     <MovieCard item={item}></MovieCard>
                                 </SwiperSlide>
                             ))}
+                        <IconSlider></IconSlider>
                     </Swiper>
                 )}
             </div>

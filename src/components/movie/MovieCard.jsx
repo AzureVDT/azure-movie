@@ -6,14 +6,21 @@ import { withErrorBoundary } from "react-error-boundary";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
 
 const MovieCard = withErrorBoundary(
-    ({ item }) => {
+    ({ item, hoverEffect = false }) => {
         const navigate = useNavigate();
         return (
-            <div className="movie-card flex flex-col rounded-lg p-3 bg-slate-800 text-white h-full select-none">
+            <div
+                className={`movie-card flex flex-col rounded-lg p-3 bg-slate-800 text-white h-full select-none ${
+                    hoverEffect
+                        ? "hover:scale-105 scale-100 transition-all"
+                        : ""
+                }`}
+            >
                 <img
                     src={tmdbAPI.imageMedium(item.poster_path)}
-                    alt=""
+                    alt={item.original_title}
                     className="w-full h-[250px] object-cover rounded-lg mb-5"
+                    onClick={() => navigate(`/movie/${item.id}`)}
                 />
                 <div className="flex flex-col flex-1">
                     <h3 className="text-white text-xl font-bold mb-3 min-h-[56px]">
@@ -56,6 +63,7 @@ const MovieCard = withErrorBoundary(
 
 MovieCard.propTypes = {
     item: PropTypes.object,
+    hoverEffect: PropTypes.bool,
 };
 
 export default MovieCard;

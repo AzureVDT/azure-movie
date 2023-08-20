@@ -42,7 +42,11 @@ const MovieSearchPage = ({ searchTitle }) => {
                     {!loading &&
                         movies.length > 0 &&
                         movies.map((item) => (
-                            <MovieCard key={item.id} item={item}></MovieCard>
+                            <MovieCard
+                                hoverEffect={true}
+                                key={item.id}
+                                item={item}
+                            ></MovieCard>
                         ))}
                     {!loading && movies.length <= 0 && (
                         <span className="text-3xl text-center text-primary font-extrabold">

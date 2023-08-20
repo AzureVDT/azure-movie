@@ -7,6 +7,8 @@ import Button from "../button/Button";
 import { useGenres } from "../../hooks/useGenres";
 import { withErrorBoundary } from "react-error-boundary";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
+import IconSlider from "../icon/IconSlider";
+import { Autoplay, Pagination } from "swiper/modules";
 const Banner = withErrorBoundary(
     () => {
         const { data, error } = useSWR(
@@ -19,7 +21,7 @@ const Banner = withErrorBoundary(
             <section className="banner h-[500px] rounded-lg page-container mb-20 overflow-hidden">
                 {isLoading ? (
                     <>
-                        <Swiper grabCursor={true} slidesPerView={"auto"}>
+                        <Swiper grabCursor={true} slidesPerView={1}>
                             <SwiperSlide>
                                 <BannerSkeleton></BannerSkeleton>
                             </SwiperSlide>
@@ -47,11 +49,22 @@ const Banner = withErrorBoundary(
                         </Swiper>
                     </>
                 ) : (
-                    <Swiper grabCursor={true} slidesPerView={"auto"}>
+                    <Swiper
+                        grabCursor={true}
+                        slidesPerView={1}
+                        autoplay={{
+                            delay: 2000,
+                            disableOnInteraction: false,
+                        }}
+                        pagination={{ clickable: true }}
+                        modules={[Autoplay, Pagination]}
+                    >
                         {movies.length > 0 &&
                             movies.map((item) => (
                                 <SwiperSlide key={item.id}>
-                                    <BannerItem item={item}></BannerItem>
+                                    <BannerItem item={item}>
+                                        <IconSlider></IconSlider>
+                                    </BannerItem>
                                 </SwiperSlide>
                             ))}
                     </Swiper>
@@ -64,12 +77,12 @@ const Banner = withErrorBoundary(
     }
 );
 
-const BannerItem = ({ item }) => {
+const BannerItem = ({ item, children }) => {
     const { genre_ids } = item;
     const navigate = useNavigate();
     const genres = useGenres();
     return (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative transition-all">
             <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
             <img
                 src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
@@ -107,6 +120,7 @@ const BannerItem = ({ item }) => {
                     Watch Now
                 </Button>
             </div>
+            {children}
         </div>
     );
 };
@@ -133,6 +147,7 @@ const BannerSkeleton = () => {
 
 BannerItem.propTypes = {
     item: PropTypes.object.isRequired,
+    children: PropTypes.node,
 };
 
 export default Banner;

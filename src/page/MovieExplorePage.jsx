@@ -38,7 +38,11 @@ const MovieExplorePage = () => {
                     {!isLoading &&
                         movies.length > 0 &&
                         movies.map((item) => (
-                            <MovieCard key={item.id} item={item}></MovieCard>
+                            <MovieCard
+                                hoverEffect={true}
+                                key={item.id}
+                                item={item}
+                            ></MovieCard>
                         ))}
                 </div>
                 <Pagination data={data}></Pagination>
