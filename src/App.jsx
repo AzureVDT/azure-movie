@@ -5,7 +5,6 @@ import "swiper/scss";
 import Main from "./components/layout/Main";
 import { MovieProvider } from "./contexts/movie-context";
 import { AuthProvider } from "./contexts/auth-context";
-import NotFoundPage from "./page/NotFoundPage";
 // dynamic import
 const HomePage = lazy(() => import("./page/HomePage"));
 const MovieExplorePage = lazy(() => import("./page/MovieExplorePage"));
@@ -13,11 +12,13 @@ const MoviePage = lazy(() => import("./page/MoviePage"));
 const GenreMovieList = lazy(() => import("./components/movie/GenreMovieList"));
 const RegisterPage = lazy(() => import("./page/RegisterPage"));
 const UserAccountPage = lazy(() => import("./page/UserAccountPage"));
+const WatchMoviePage = lazy(() => import("./page/WatchMoviePage"));
+const NotFoundPage = lazy(() => import("./page/NotFoundPage"));
 
 const App = () => {
     return (
         <>
-            <Suspense fallback={<></>}>
+            <Suspense>
                 <MovieProvider>
                     <AuthProvider>
                         <Routes>
@@ -35,6 +36,10 @@ const App = () => {
                                 <Route
                                     path="/movie/:slug"
                                     element={<MoviePage></MoviePage>}
+                                ></Route>
+                                <Route
+                                    path="/watch/movie/:slug"
+                                    element={<WatchMoviePage></WatchMoviePage>}
                                 ></Route>
                                 <Route
                                     path="/discover/:slug"

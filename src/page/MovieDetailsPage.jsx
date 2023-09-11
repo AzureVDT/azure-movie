@@ -5,6 +5,7 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "../components/movie/MovieCard";
 import PropTypes from "prop-types";
 import React from "react";
+import IconSlider from "../components/icon/IconSlider";
 const MovieDetailsPage = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ const MovieDetailsPage = () => {
                 <div className="w-full h-[600px] relative">
                     <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-[rgba(0,0,0,0.7)]"></div>
                     <div
-                        className="w-full h-full bg-cover bg-no-repeat"
+                        className="w-full h-full bg-no-repeat bg-cover"
                         style={{
                             backgroundImage: `url(${tmdbAPI.imageOriginal(
                                 backdrop_path
@@ -47,7 +48,7 @@ const MovieDetailsPage = () => {
                     ></div>
                     <div className="w-full max-w-[800px] absolute top-[36%] right-16 text-white">
                         <div>{new Date(release_date).getFullYear()}</div>
-                        <h3 className="text-4xl font-extrabold mb-5">
+                        <h3 className="mb-5 text-4xl font-extrabold">
                             {title}
                         </h3>
                         <div className="flex items-center gap-x-3">
@@ -55,7 +56,7 @@ const MovieDetailsPage = () => {
                                 genres.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="border border-primary text-primary rounded-lg px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
+                                        className="px-4 py-2 border rounded-lg cursor-pointer border-primary text-primary hover:bg-primary hover:text-white"
                                         onClick={() =>
                                             navigate(
                                                 `/discover/genreid=${item.id}&type=${item.name}`
@@ -93,15 +94,38 @@ const MovieDetailsPage = () => {
                             <p>{overview}</p>
                         </div>
                     </div>
-                    <div className="w-full h-[500px] max-w-[400px] ml-[200px] -translate-y-3/4">
+                    <div
+                        className={`w-full h-[500px] max-w-[400px] ml-[200px] -translate-y-3/4`}
+                    >
                         <img
                             src={tmdbAPI.imageOriginal(poster_path)}
                             alt={title}
-                            className="w-full h-full object-cover rounded-xl"
+                            className="object-cover w-full h-full rounded-xl"
                         />
+                        <span
+                            className="absolute text-white top-3/4 cursor-pointer w-full max-w-[400px] bg-primary
+                                flex items-center justify-center px-6 py-3 mt-5 gap-x-3 z-[9999] transition-all"
+                            onClick={() => navigate(`/watch/movie/${slug}`)}
+                        >
+                            <span>Watch now</span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
+                                />
+                            </svg>
+                        </span>
                     </div>
                 </div>
-                <div className="page-container text-white">
+                <div className="text-white page-container">
                     <MovieMeta type="credits"></MovieMeta>
                     <MovieMeta type="videos"></MovieMeta>
                     <MovieMeta type="similar"></MovieMeta>
@@ -141,11 +165,11 @@ function MovieMeta({ type }) {
         if (type === "videos") {
             return (
                 <div className="py-10">
-                    <h2 className="text-center text-3xl mb-10">Trailer</h2>
+                    <h2 className="mb-10 text-3xl text-center">Trailer</h2>
                     <div className="flex flex-col gap-10">
                         {results.slice(0, 2).map((item) => (
                             <div key={item.id}>
-                                <h3 className="mb-5 text-xl font-medium p-3 bg-secondary inline-block rounded-lg">
+                                <h3 className="inline-block p-3 mb-5 text-xl font-medium rounded-lg bg-secondary">
                                     {item.name}
                                 </h3>
                                 <div className="aspect-video">
@@ -166,14 +190,14 @@ function MovieMeta({ type }) {
         if (type === "similar") {
             return (
                 <div className="py-10">
-                    <h2 className="text-3xl font-medium mb-10">
+                    <h2 className="mb-10 text-3xl font-medium">
                         Similar movies
                     </h2>
                     <div className="movie-list">
                         <Swiper
                             grabCursor={true}
-                            spaceBetween={40}
-                            slidesPerView={"auto"}
+                            spaceBetween={30}
+                            slidesPerView={4}
                         >
                             {results.length > 0 &&
                                 results.map((item) => (
@@ -181,6 +205,7 @@ function MovieMeta({ type }) {
                                         <MovieCard item={item}></MovieCard>
                                     </SwiperSlide>
                                 ))}
+                            <IconSlider></IconSlider>
                         </Swiper>
                     </div>
                 </div>

@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import { useSwiper } from "swiper/react";
-const IconNext = () => {
+const IconSlider = () => {
     const swiper = useSwiper();
     return (
         <div className="absolute z-[1000] top-2/4 left-0 -translate-y-2/4 w-full">
             <div className="flex items-center justify-between">
                 <span
                     onClick={() => swiper.slidePrev()}
-                    className="text-white cursor-pointer hover:bg-primary rounded bg-transparent px-2 m-2"
+                    className="px-2 m-2 text-white bg-transparent rounded cursor-pointer hover:bg-primary"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@ const IconNext = () => {
                 </span>
                 <span
                     onClick={() => swiper.slideNext()}
-                    className="text-white cursor-pointer hover:bg-primary rounded bg-transparent px-2 m-2"
+                    className="px-2 m-2 text-white bg-transparent rounded cursor-pointer hover:bg-primary"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -44,9 +44,9 @@ const IconNext = () => {
     );
 };
 
-IconNext.propTypes = {
+IconSlider.propTypes = {
     onClick: PropTypes.func,
     children: PropTypes.node,
 };
 
-export default IconNext;
+export default IconSlider;
