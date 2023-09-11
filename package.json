@@ -15,6 +15,7 @@
     "node-sass": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.11",
     "react-hook-form": "^7.45.4",
     "react-loading-iframe": "^1.1.0",
     "react-paginate": "^8.2.0",
