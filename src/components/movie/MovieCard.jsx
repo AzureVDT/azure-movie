@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import Button from "../button/Button";
-import { tmdbAPI } from "../../config";
+import { handleFallbackComponent, tmdbAPI } from "../../config";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
+import { withErrorBoundary } from "react-error-boundary";
 
 const MovieCard = ({ item, hoverEffect = false }) => {
     const navigate = useNavigate();
@@ -60,7 +61,10 @@ MovieCard.propTypes = {
     hoverEffect: PropTypes.bool,
 };
 
-export default MovieCard;
+// eslint-disable-next-line react-refresh/only-export-components
+export default withErrorBoundary(MovieCard, {
+    FallbackComponent: handleFallbackComponent,
+});
 
 export const MovieCardSkeleton = () => {
     return (

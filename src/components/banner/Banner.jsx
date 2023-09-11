@@ -1,6 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import { SwiperSlide, Swiper } from "swiper/react";
 import useSWR from "swr";
-import { fetcher, tmdbAPI } from "../../config";
+import { fetcher, handleFallbackComponent, tmdbAPI } from "../../config";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import Button from "../button/Button";
@@ -8,6 +9,7 @@ import { useGenres } from "../../hooks/useGenres";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
 import IconSlider from "../icon/IconSlider";
 import { Autoplay, Pagination } from "swiper/modules";
+import { withErrorBoundary } from "react-error-boundary";
 const Banner = () => {
     const { data, error } = useSWR(tmdbAPI.getMovieList("upcoming"), fetcher);
     const movies = data?.results || [];
@@ -141,4 +143,6 @@ BannerItem.propTypes = {
     children: PropTypes.node,
 };
 
-export default Banner;
+export default withErrorBoundary(Banner, {
+    FallbackComponent: handleFallbackComponent,
+});

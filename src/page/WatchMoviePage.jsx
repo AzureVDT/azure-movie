@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import EmbedVideoMovie from "../components/movie/EmbedVideoMovie";
 import { fetcher, tmdbAPI } from "../config";
 import useSWR from "swr";
-import MovieCard from "../components/movie/MovieCard";
+import MovieCard, { MovieCardSkeleton } from "../components/movie/MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect } from "react";
 import IconSlider from "../components/icon/IconSlider";
@@ -87,25 +87,56 @@ const WatchMoviePage = () => {
 
 const SimilarMovie = () => {
     const { slug } = useParams();
-    const { data } = useSWR(tmdbAPI.getMovieMeta(slug, "similar"), fetcher);
+    const { data, error } = useSWR(
+        tmdbAPI.getMovieMeta(slug, "similar"),
+        fetcher
+    );
     if (!data) return null;
     const { results } = data;
     if (!results || results.length <= 0) return null;
+    const isLoading = !data && !error;
     return (
         <div className="py-10">
             <h2 className="mb-10 text-3xl font-medium text-white">
                 Similar movies
             </h2>
             <div className="movie-list">
-                <Swiper grabCursor={true} spaceBetween={30} slidesPerView={4}>
-                    {results.length > 0 &&
-                        results.map((item) => (
-                            <SwiperSlide key={item.id}>
-                                <MovieCard item={item}></MovieCard>
+                {isLoading ? (
+                    <>
+                        <Swiper
+                            grabCursor={true}
+                            spaceBetween={30}
+                            slidesPerView={4}
+                        >
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
                             </SwiperSlide>
-                        ))}
-                    <IconSlider></IconSlider>
-                </Swiper>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <MovieCardSkeleton></MovieCardSkeleton>
+                            </SwiperSlide>
+                        </Swiper>
+                    </>
+                ) : (
+                    <Swiper
+                        grabCursor={true}
+                        spaceBetween={30}
+                        slidesPerView={4}
+                    >
+                        {results.length > 0 &&
+                            results.map((item) => (
+                                <SwiperSlide key={item.id}>
+                                    <MovieCard item={item}></MovieCard>
+                                </SwiperSlide>
+                            ))}
+                        <IconSlider></IconSlider>
+                    </Swiper>
+                )}
             </div>
         </div>
     );
