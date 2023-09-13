@@ -22,7 +22,7 @@ const MovieSearchPage = ({ searchTitle }) => {
     const movies = data?.results || [];
     return (
         <div
-            className="absolute top-0 w-full"
+            className="absolute top-0 w-full overflow-hidden"
             style={{
                 backgroundImage: `url("../src/assets/universe-2.jpg")`,
                 backgroundSize: "cover",
@@ -30,7 +30,7 @@ const MovieSearchPage = ({ searchTitle }) => {
             }}
         >
             <div className="py-10 page-container mt-[120px] relative">
-                <div className="grid grid-cols-4 gap-10">
+                <div className="grid grid-cols-2 gap-10 lg:grid-cols-4 md:grid-cols-4">
                     {loading &&
                         new Array(20)
                             .fill(0)
@@ -49,7 +49,7 @@ const MovieSearchPage = ({ searchTitle }) => {
                             ></MovieCard>
                         ))}
                     {!loading && movies.length <= 0 && (
-                        <span className="text-3xl text-center text-primary font-extrabold">
+                        <span className="text-3xl font-extrabold text-center text-primary">
                             No result
                         </span>
                     )}

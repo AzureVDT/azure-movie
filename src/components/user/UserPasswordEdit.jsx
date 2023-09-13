@@ -72,12 +72,12 @@ const UserPasswordEdit = () => {
     };
     return (
         <>
-            <h1 className="text-3xl mb-5 font-semibold text-center ml-[300px]">
+            <h1 className="invisible mb-5 text-3xl font-semibold text-center lg:visible">
                 PASSWORD
             </h1>
             <div className="flex flex-col gap-y-5">
                 <div>
-                    <h2 className="text-2xl font-semibold mb-3">
+                    <h2 className="mb-3 text-2xl font-semibold">
                         User Password
                     </h2>
                     <p className="text-base">
@@ -85,10 +85,10 @@ const UserPasswordEdit = () => {
                     </p>
                 </div>
                 <div>
-                    <div className="text-xl font-semibold mb-3">Password</div>
+                    <div className="mb-3 text-xl font-semibold">Password</div>
                     <div className="flex items-center justify-between">
                         {showEdit ? (
-                            <div className="flex flex-col items-center justify-center gap-y-5 w-full">
+                            <div className="flex flex-col items-center justify-center w-full gap-y-5">
                                 <input
                                     type="text"
                                     placeholder="Enter your old password"
@@ -126,13 +126,13 @@ const UserPasswordEdit = () => {
                                 </div>
                                 <div>
                                     <button
-                                        className="text-base text-white px-2 py-2 bg-primary rounded mr-5"
+                                        className="px-2 py-2 mr-5 text-base text-white rounded bg-primary"
                                         onClick={() => setShowEdit(false)}
                                     >
                                         Cancel
                                     </button>
                                     <button
-                                        className="text-base text-white px-4 py-2 bg-primary-gradient rounded"
+                                        className="px-4 py-2 text-base text-white rounded bg-primary-gradient"
                                         onClick={handleUpdatePassword}
                                     >
                                         Finish

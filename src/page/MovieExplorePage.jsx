@@ -18,7 +18,7 @@ const MovieExplorePage = () => {
     const movies = data?.results || [];
     return (
         <div
-            className="absolute top-0 w-full"
+            className="absolute top-0 w-full overflow-hidden"
             style={{
                 backgroundImage: `url("../src/assets/universe-2.jpg")`,
                 backgroundSize: "cover",
@@ -26,7 +26,7 @@ const MovieExplorePage = () => {
             }}
         >
             <div className="page-container mt-[140px] mb-10">
-                <div className="grid grid-cols-4 gap-10">
+                <div className="grid grid-cols-2 gap-10 lg:grid-cols-4 md:grid-cols-4">
                     {isLoading &&
                         new Array(20)
                             .fill(0)

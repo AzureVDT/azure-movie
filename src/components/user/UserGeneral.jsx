@@ -22,12 +22,12 @@ const UserGeneral = () => {
     }, []);
     return (
         <>
-            <h1 className="text-3xl mb-5 font-semibold text-center ml-[300px]">
+            <h1 className="invisible mb-5 text-3xl font-semibold text-center lg:visible">
                 GENERAL
             </h1>
             <div className="flex flex-col gap-y-5">
                 <div>
-                    <h2 className="text-2xl font-semibold mb-3">
+                    <h2 className="mb-3 text-2xl font-semibold">
                         User Information
                     </h2>
                     <p className="text-base">
@@ -35,13 +35,13 @@ const UserGeneral = () => {
                     </p>
                 </div>
                 <div>
-                    <div className="text-xl font-semibold mb-3">Email</div>
+                    <div className="mb-3 text-xl font-semibold">Email</div>
                     <div className="text-base text-white select-none">
                         {userInfo?.email}
                     </div>
                 </div>
                 <div>
-                    <div className="text-xl font-semibold mb-3">
+                    <div className="mb-3 text-xl font-semibold">
                         Display Name
                     </div>
                     <div className="flex items-center justify-between">
@@ -56,13 +56,13 @@ const UserGeneral = () => {
                                     }
                                 />
                                 <button
-                                    className="text-base text-white px-2 py-2 bg-primary rounded"
+                                    className="px-2 py-2 text-base text-white rounded bg-primary"
                                     onClick={() => setShowEdit(false)}
                                 >
                                     Cancel
                                 </button>
                                 <button
-                                    className="text-base text-white px-4 py-2 bg-primary-gradient rounded"
+                                    className="px-4 py-2 text-base text-white rounded bg-primary-gradient"
                                     onClick={handleUpdateDisplayName}
                                 >
                                     Finish

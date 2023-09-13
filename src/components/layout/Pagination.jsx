@@ -2,10 +2,11 @@ import React from "react";
 import { useMovie } from "../../contexts/movie-context";
 import ReactPaginate from "react-paginate";
 import PropTypes from "prop-types";
+import useWindowSize from "../../hooks/useWindowSize";
 const itemsPerPage = 20;
 const customNextLabel = (
-    <span className="cursor-pointer flex items-center justify-center py-2 px-4 rounded bg-primary gap-x-1 hover:bg-secondary">
-        <span className="text-sm text-current font-medium">Next</span>
+    <span className="flex items-center justify-center px-4 py-2 rounded cursor-pointer bg-primary gap-x-1 hover:bg-secondary">
+        <span className="text-sm font-medium text-current">Next</span>
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -23,7 +24,7 @@ const customNextLabel = (
     </span>
 );
 const customPrevLabel = (
-    <span className="cursor-pointer flex items-center justify-center py-2 px-4 rounded bg-primary gap-x-1 hover:bg-secondary">
+    <span className="flex items-center justify-center px-4 py-2 rounded cursor-pointer bg-primary gap-x-1 hover:bg-secondary">
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -38,13 +39,15 @@ const customPrevLabel = (
                 d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75"
             />
         </svg>
-        <span className="text-sm text-current font-medium">Prev</span>
+        <span className="text-sm font-medium text-current">Prev</span>
     </span>
 );
 const Pagination = ({ data }) => {
     const { setNextPage } = useMovie();
     const [pageCount, setPageCount] = React.useState(0);
     const [itemOffset, setItemOffset] = React.useState(0);
+    const windowSize = useWindowSize();
+    const isMobile = windowSize.width < 640;
     React.useEffect(() => {
         if (!data || !data.total_results) return;
         setPageCount(Math.ceil(data.total_results / itemsPerPage));
@@ -60,11 +63,11 @@ const Pagination = ({ data }) => {
                 breakLabel="..."
                 nextLabel={customNextLabel}
                 onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
+                pageRangeDisplayed={isMobile ? 2 : 5}
                 pageCount={pageCount}
                 previousLabel={customPrevLabel}
                 renderOnZeroPageCount={null}
-                className="pagination"
+                className="pagination sm:flex-wrap"
             />
         </>
     );

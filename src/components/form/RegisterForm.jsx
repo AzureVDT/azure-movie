@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import IconEyeOpen from "../icon/IconEyeOpen";
 import { useAuth } from "../../contexts/auth-context";
 import IconEyeClose from "../icon/IconEyeClose";
+import useWindowSize from "../../hooks/useWindowSize";
 const schemaValidation = yup.object({
     firstName: yup.string().required("Please enter your first name"),
     lastName: yup.string().required("Please enter your last name"),
@@ -43,6 +44,8 @@ const RegisterForm = () => {
     } = useForm({
         resolver: yupResolver(schemaValidation),
     });
+    const windowSize = useWindowSize();
+    const isMobile = windowSize.width < 640;
     const onHandleSubmit = async (values) => {
         if (!isValid) return;
         await createUserWithEmailAndPassword(
@@ -84,24 +87,45 @@ const RegisterForm = () => {
     }, []);
     return (
         <form onSubmit={handleSubmit(onHandleSubmit)} autoComplete="off">
-            <div className="flex items-center justify-between">
-                <FormGroup
-                    type="text"
-                    placeholder="Enter your first name"
-                    name="firstName"
-                    id="firstName"
-                    label="First name"
-                    control={control}
-                ></FormGroup>
-                <FormGroup
-                    type="text"
-                    placeholder="Enter your last name"
-                    name="lastName"
-                    id="lastName"
-                    label="Last name"
-                    control={control}
-                ></FormGroup>
-            </div>
+            {isMobile ? (
+                <>
+                    <FormGroup
+                        type="text"
+                        placeholder="Enter your first name"
+                        name="firstName"
+                        id="firstName"
+                        label="First name"
+                        control={control}
+                    ></FormGroup>
+                    <FormGroup
+                        type="text"
+                        placeholder="Enter your last name"
+                        name="lastName"
+                        id="lastName"
+                        label="Last name"
+                        control={control}
+                    ></FormGroup>
+                </>
+            ) : (
+                <div className="flex items-center justify-between">
+                    <FormGroup
+                        type="text"
+                        placeholder="Enter your first name"
+                        name="firstName"
+                        id="firstName"
+                        label="First name"
+                        control={control}
+                    ></FormGroup>
+                    <FormGroup
+                        type="text"
+                        placeholder="Enter your last name"
+                        name="lastName"
+                        id="lastName"
+                        label="Last name"
+                        control={control}
+                    ></FormGroup>
+                </div>
+            )}
             <FormGroup
                 type="email"
                 placeholder="Enter your email address"

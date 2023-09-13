@@ -11,7 +11,7 @@ const UserOption = () => {
     const navigate = useNavigate();
     return (
         <div
-            className="relative z-[9999] cursor-pointer border border-secondary hover:bg-secondary rounded px-4 py-2"
+            className="relative z-[8888] cursor-pointer border border-secondary hover:bg-secondary rounded px-4 py-2"
             ref={nodeRef}
         >
             <span>{userInfo?.displayName}</span>
@@ -21,16 +21,16 @@ const UserOption = () => {
                 }`}
             >
                 <div
-                    className="w-full hover:text-white hover:bg-primary-gradient px-4 py-2 bg-white"
+                    className="w-full px-4 py-2 bg-white hover:text-white hover:bg-primary-gradient"
                     onClick={() => navigate("/profile")}
                 >
                     Your Account
                 </div>
-                <div className="w-full hover:text-white hover:bg-primary-gradient px-4 py-2 bg-white">
+                <div className="w-full px-4 py-2 bg-white hover:text-white hover:bg-primary-gradient">
                     Setting
                 </div>
                 <div
-                    className="w-full hover:text-white hover:bg-primary-gradient px-4 py-2 bg-white"
+                    className="w-full px-4 py-2 bg-white hover:text-white hover:bg-primary-gradient"
                     onClick={() => {
                         signOut(auth);
                     }}

@@ -6,6 +6,7 @@ import MovieCard, { MovieCardSkeleton } from "../components/movie/MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect } from "react";
 import IconSlider from "../components/icon/IconSlider";
+import useWindowSize from "../hooks/useWindowSize";
 
 const WatchMoviePage = () => {
     const { slug } = useParams();
@@ -27,7 +28,7 @@ const WatchMoviePage = () => {
             <div className="relative mt-[140px]">
                 <div className="page-container">
                     <EmbedVideoMovie id={slug}></EmbedVideoMovie>
-                    <div className="w-full text-white">
+                    <div className="w-full p-3 text-white">
                         <h3 className="mb-5 text-4xl font-extrabold">
                             {data.title}
                         </h3>
@@ -86,6 +87,8 @@ const WatchMoviePage = () => {
 };
 
 const SimilarMovie = () => {
+    const windowSize = useWindowSize();
+    const isMobile = windowSize?.width < 640;
     const { slug } = useParams();
     const { data, error } = useSWR(
         tmdbAPI.getMovieMeta(slug, "similar"),
@@ -97,7 +100,7 @@ const SimilarMovie = () => {
     const isLoading = !data && !error;
     return (
         <div className="py-10">
-            <h2 className="mb-10 text-3xl font-medium text-white">
+            <h2 className="p-3 mb-10 text-3xl font-medium text-white">
                 Similar movies
             </h2>
             <div className="movie-list">
@@ -105,37 +108,52 @@ const SimilarMovie = () => {
                     <>
                         <Swiper
                             grabCursor={true}
-                            spaceBetween={30}
-                            slidesPerView={4}
+                            spaceBetween={isMobile ? 10 : 30}
+                            slidesPerView={isMobile ? 2 : 4}
                         >
-                            <SwiperSlide>
-                                <MovieCardSkeleton></MovieCardSkeleton>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <MovieCardSkeleton></MovieCardSkeleton>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <MovieCardSkeleton></MovieCardSkeleton>
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <MovieCardSkeleton></MovieCardSkeleton>
-                            </SwiperSlide>
+                            {isMobile ? (
+                                <>
+                                    <SwiperSlide>
+                                        <MovieCardSkeleton></MovieCardSkeleton>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <MovieCardSkeleton></MovieCardSkeleton>
+                                    </SwiperSlide>
+                                </>
+                            ) : (
+                                <>
+                                    <SwiperSlide>
+                                        <MovieCardSkeleton></MovieCardSkeleton>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <MovieCardSkeleton></MovieCardSkeleton>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <MovieCardSkeleton></MovieCardSkeleton>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <MovieCardSkeleton></MovieCardSkeleton>
+                                    </SwiperSlide>
+                                </>
+                            )}
                         </Swiper>
                     </>
                 ) : (
-                    <Swiper
-                        grabCursor={true}
-                        spaceBetween={30}
-                        slidesPerView={4}
-                    >
-                        {results.length > 0 &&
-                            results.map((item) => (
-                                <SwiperSlide key={item.id}>
-                                    <MovieCard item={item}></MovieCard>
-                                </SwiperSlide>
-                            ))}
-                        <IconSlider></IconSlider>
-                    </Swiper>
+                    <>
+                        <Swiper
+                            grabCursor={true}
+                            spaceBetween={isMobile ? 10 : 30}
+                            slidesPerView={isMobile ? 2 : 4}
+                        >
+                            {results.length > 0 &&
+                                results.map((item) => (
+                                    <SwiperSlide key={item.id}>
+                                        <MovieCard item={item}></MovieCard>
+                                    </SwiperSlide>
+                                ))}
+                            <IconSlider></IconSlider>
+                        </Swiper>
+                    </>
                 )}
             </div>
         </div>

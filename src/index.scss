@@ -31,6 +31,9 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
+    @media (max-width: 640px) {
+        flex-wrap: wrap;
+    }
     .selected {
         @apply text-primary;
     }
