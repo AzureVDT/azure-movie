@@ -6,11 +6,15 @@ import ReactDOM from "react-dom";
 import LoginPage from "../../page/LoginPage";
 import { useAuth } from "../../contexts/auth-context";
 import UserOption from "../user/UserOption";
+import MenuResponsive from "../responsive/MenuResponsive";
+import { useState } from "react";
 const Header = () => {
     const { filter, setFilter, filterDebounce, setShowLogin, showLogin } =
         useMovie();
     const { userInfo } = useAuth();
     const navigate = useNavigate();
+    const [showSideBar, setShowSideBar] = useState(false);
+
     if (typeof document === "undefined") return null;
     return ReactDOM.createPortal(
         <div
@@ -20,9 +24,9 @@ const Header = () => {
                 backgroundPosition: "center",
             }}
         >
-            <header className="header w-full fixed top-0 z-[1000] py-10">
-                <div className="flex page-container items-center justify-between text-white p-3 bg-slate-700 bg-opacity-50 rounded-lg">
-                    <div className="flex items-center justify-center gap-x-5">
+            <header className="header w-screen fixed top-0 bottom-0 z-[1000] mt-10 h-[65.6px]">
+                <div className="flex items-center justify-between p-3 text-white bg-opacity-50 rounded-lg page-container bg-slate-700">
+                    <div className="items-center justify-center hidden lg:flex md:flex gap-x-5">
                         <NavLink
                             to={"/"}
                             className={({ isActive }) =>
@@ -41,53 +45,81 @@ const Header = () => {
                         </NavLink>
                         <MovieGenres></MovieGenres>
                     </div>
-                    <div className="flex items-center justify-center gap-x-3">
-                        <div className="flex-1 w-full max-w-[500px]">
-                            <input
-                                autoComplete="off"
-                                type="text"
-                                name="search"
-                                placeholder="Enter movies..."
-                                className="w-full p-2 bg-slate-800 rounded-lg text-white border border-secondary focus:border-primary"
-                                onChange={(e) => setFilter(e.target.value)}
-                            />
-                        </div>
-                        <button
-                            className={`p-2 bg-primary text-white rounded-lg hover:bg-secondary cursor-pointer ${
-                                filter ? "" : "opacity-70"
-                            }`}
-                            onClick={() =>
-                                navigate(`/movie/search=${filterDebounce}`)
-                            }
-                            disabled={!filter}
+                    <button
+                        className="inline-block cursor-pointer lg:hidden md:hidden"
+                        onClick={() => setShowSideBar(true)}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                            />
+                        </svg>
+                    </button>
+                    <div className="flex items-center justify-center ml-5 lg:gap-x-3 md:gap-x-3 gap-x-5">
+                        <div className="flex items-center justify-center mr-auto gap-x-3">
+                            <div className="flex-1 w-full max-w-[500px]">
+                                <input
+                                    autoComplete="off"
+                                    type="text"
+                                    name="search"
+                                    placeholder="Enter movies..."
+                                    className="w-full p-2 text-white border rounded-lg bg-slate-800 border-secondary focus:border-primary"
+                                    onChange={(e) => setFilter(e.target.value)}
                                 />
-                            </svg>
-                        </button>
-                        {userInfo ? (
-                            <UserOption></UserOption>
-                        ) : (
-                            <Button
-                                className="px-4 py-2"
-                                onClick={() => setShowLogin(true)}
+                            </div>
+                            <button
+                                className={`p-2 bg-primary text-white rounded-lg hover:bg-secondary cursor-pointer ${
+                                    filter ? "" : "opacity-70"
+                                }`}
+                                onClick={() =>
+                                    navigate(`/movie/search=${filterDebounce}`)
+                                }
+                                disabled={!filter}
                             >
-                                Sign In
-                            </Button>
-                        )}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                        <div>
+                            {userInfo ? (
+                                <UserOption></UserOption>
+                            ) : (
+                                <Button
+                                    className="px-4 py-2"
+                                    onClick={() => setShowLogin(true)}
+                                >
+                                    Sign In
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
+                {showSideBar && (
+                    <MenuResponsive
+                        setShowSideBar={setShowSideBar}
+                    ></MenuResponsive>
+                )}
             </header>
             {showLogin && <LoginPage></LoginPage>}
         </div>,

@@ -17,7 +17,7 @@ const MovieGenres = () => {
                     genres.map((item) => (
                         <div
                             key={item.id}
-                            className="border border-secondary text-primary rounded-lg px-4 py-2 cursor-pointer hover:bg-primary hover:text-white"
+                            className="px-4 py-2 border rounded-lg cursor-pointer border-secondary text-primary hover:bg-primary hover:text-white"
                             onClick={() =>
                                 navigate(
                                     `/discover/genreid=${item.id}&type=${item.name}`

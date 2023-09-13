@@ -17,14 +17,22 @@ export function MovieProvider(props) {
         setShow: setShowLogin,
         nodeRef: loginRef,
     } = useClickOutSide();
+    const {
+        show: showSideBar,
+        setShow: setShowSideBar,
+        nodeRef: sideBarRef,
+    } = useClickOutSide();
     const value = {
         loginRef,
+        sideBarRef,
         filter,
         filterDebounce,
         url,
         nextPage,
         showLogin,
+        showSideBar,
         setShowLogin,
+        setShowSideBar,
         setFilter,
         setUrl,
         setNextPage,
